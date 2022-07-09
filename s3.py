@@ -6,7 +6,7 @@ class S3():
     def __init__(self):
         self.client = boto3.client("s3")
 
-    def list_object(self, bucket: str) -> Dict:
+    def list_objects(self, bucket: str) -> Dict:
         try:
             return self.client.list_objects(Bucket=bucket)
         except botocore.exceptions.ClientError as e:
@@ -17,4 +17,4 @@ class S3():
 
 if __name__ == "__main__":
     s3 = S3()
-    s3.list_object("hoge")
+    s3.list_objects("hoge")
