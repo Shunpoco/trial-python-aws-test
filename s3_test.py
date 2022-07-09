@@ -170,3 +170,15 @@ def test_S3():
         service_response = s3.list_objects(bucket="test-bucket")
 
     assert service_response == response
+
+def test_s3_error():
+    s3 = S3()
+
+    stubber = Stubber(s3.client)
+
+    stubber.add_client_error("list_objects", service_error_code="NoSuchBucket", service_message="The specified bucket does not exist.", http_status_code=404, expected_params={"Bucket": ANY})
+
+    with stubber:
+        service_response = s3.list_objects(bucket="test-bucket")
+
+    assert service_response is None
