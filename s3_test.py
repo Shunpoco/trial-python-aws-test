@@ -36,3 +36,23 @@ def test_sample():
 
     service_response = s3.list_objects(Bucket="test-bucket")
     assert service_response == response
+
+def test_sample2():
+    s3 = boto3.client("s3")
+    
+    response = {
+        "Owner": {
+            "ID": "foo",
+            "DisplayName": "bar",
+        },
+        "Buckets": [{
+            "CreationDate": datetime.datetime(2016, 1, 20, 22, 9),
+            "Name": "baz",
+        }],
+    }
+
+    with Stubber(s3) as stubber:
+        stubber.add_response("list_buckets", response, {})
+        service_response = s3.list_buckets()
+
+    assert service_response == response
